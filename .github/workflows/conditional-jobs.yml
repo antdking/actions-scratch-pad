@@ -1,0 +1,77 @@
+name: conditional jobs
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  never-runs:
+    if: false
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "How did we get here...."
+          exit 1
+
+  always-skips-due-to-needs:
+    runs-on: ubuntu-latest
+    needs: [never-runs]
+    steps:
+      - run: |
+          echo "How did we get here...."
+          exit 1
+  
+  always-skips-due-to-needs--longform:
+    runs-on: ubuntu-latest
+    needs: [never-runs]
+    # success() already checks for past failures + cancellations
+    # there isn't a way for us to say "all items in array are a value"
+    if: |
+      success()
+      && ! (
+        contains(needs.*.result, "skipped")
+      )
+    steps:
+      - run: |
+          echo "How did we get here...."
+          exit 1
+
+  # don't do this, as it breaks cancelling
+  always-runs-ignoring-needs--avoid:
+    needs: [never-runs]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - run: |
+          echo "Hello, there 👀"
+  
+  always-runs-ignoring-needs--permit-failures:
+    needs: [never-runs]
+    runs-on: ubuntu-latest
+    # NOTE: "key: !val" has special meaning in YAML
+    if: ${{ !cancelled() }}
+    steps:
+      - run: |
+          echo "Hello, again"
+  
+  always-runs-ignoring-needs:
+    needs: [never-runs]
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - run: |
+          echo "Hello, successful"
+  
+  runs-BECAUSE-needs-were-skipped:
+    needs: [never-runs]
+    runs-on: ubuntu-latest
+    # note we don't need '!cancelled()' or 'always()'
+    if: needs.never-runs.result == "skipped"
+    steps:
+      - run: |
+          echo "Opposite day!"
