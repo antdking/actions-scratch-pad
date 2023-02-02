@@ -1,0 +1,46 @@
+name: conditional steps
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  with-failure:
+    runs-on: ubuntu-latest
+    steps:
+      - if: failure()
+        run: |
+          echo "This will never show, as a failure hasn't occurred yet"
+          echo "status: ${{ job.status }}"
+      - id: fails
+        run: |
+          echo "status: ${{ job.status }}"
+          exit 1
+      - run: |
+          echo "This should never show"
+          echo "status: ${{ job.status }}"
+
+      - if: failure()
+        run: |
+          echo "This will show when there is a prior failure"
+          echo "status: ${{ job.status }}"
+        
+      - if: always()
+        run: |
+          echo "this will always show, no matter what"
+          echo "status: ${{ job.status }}"
+      
+      - if: ${{ !cancelled() }}
+        run: |
+          echo "this should show, as docs suggest"
+          echo "status: ${{ job.status }}"
+
+      - if: success()
+        run: |
+          echo "this will never show"
+          echo "status: ${{ job.status }}"
