@@ -1,0 +1,24 @@
+name: string comparisons
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  TRUTHY: "${{ 'some_val' == 'some_val' }}"
+  FALSY: "${{ 'some_val' == 'not that val' }}"
+  MAYBE_NULL: "${{ github.DOES_NOT_EXIST == 'some-val' }}"
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "${TRUTHY}"
+          echo "${FALSY}"
+          echo "${MAYBE_NULL}"
