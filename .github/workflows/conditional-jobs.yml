@@ -34,7 +34,7 @@ jobs:
     if: |
       success()
       && ! (
-        contains(needs.*.result, "skipped")
+        contains(needs.*.result, 'skipped')
       )
     steps:
       - run: |
@@ -71,7 +71,7 @@ jobs:
     needs: [never-runs]
     runs-on: ubuntu-latest
     # note we don't need '!cancelled()' or 'always()'
-    if: needs.never-runs.result == "skipped"
+    if: needs.never-runs.result == 'skipped'
     steps:
       - run: |
           echo "Opposite day!"
