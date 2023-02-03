@@ -56,6 +56,7 @@ jobs:
     steps:
       - id: foo
         name: Foo
+        # runs because the string "true\n" is truthy
         if: |
           ${{
             true
@@ -63,11 +64,20 @@ jobs:
         run: echo "it runs"
       - id: bar
         name: Bar
+        # runs because the string "false\n" is truthy
         if: |
           ${{
             false
           }}
         run: echo "it runs"
+      - id: zed
+        name: Zed
+        # Skips as the expression "false && true" is falsy
+        if: |
+          ${{
+            false
+          }}
+          && true
       - name: CheckFoo
         if: steps.foo.outcome != 'success'
         run: |
@@ -77,6 +87,11 @@ jobs:
         if: steps.bar.outcome != 'skipped'
         run: |
           echo "Bar ran when it should not have"
+          exit 1
+      - name: CheckZed
+        if: steps.bar.outcome != 'skipped'
+        run: |
+          echo "Zed ran when it should not have"
           exit 1
 
   main:
