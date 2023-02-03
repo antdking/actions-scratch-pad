@@ -54,6 +54,11 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
+      - id: plain
+        name: Plain
+        if: ${{ false }}
+        run: echo "this runs"
+
       - id: foo
         name: Foo
         # runs because the string "true\n" is truthy
@@ -63,6 +68,7 @@ jobs:
             true
           }}
         run: echo "it runs"
+
       - id: bar
         name: Bar
         # runs because the string "false\n" is truthy
@@ -72,6 +78,7 @@ jobs:
             false
           }}
         run: echo "it runs"
+
       - id: zed
         name: Zed
         # runs as '&& true' is added as string ("false\n&& true\n")
@@ -82,6 +89,7 @@ jobs:
           }}
           && true
         run: echo "it runs"
+
       - id: doodar
         name: Doodar
         # the block is still a string
@@ -93,28 +101,38 @@ jobs:
           }}
           && true
         run: echo "it runs"
+
       - id: eggz
         name: Eggz
+        # equiv: format('true && {0}\n&& true\n', false)
         if: |
           true && ${{ false }}
           && true
         run: echo "it runs"
+
       - id: eggzTrimmed
         name: Eggz Trimmed
+        # equiv: format('true && {0}\n&& true', false)
         if: |-
           true && ${{ false }}
           && true
         run: echo "it runs"
+
       - id: fred
         name: Fred
+        # equiv: format('true && {0} && true', false)
         if: true && ${{ false }} && true
         run: echo "it runs"
+
       - id: dave
         name: Dave
+        # equiv: format('{0} == true', false)
         if: ${{ false }} == true
         run: echo "it runs"
+
       - id: jeff
         name: Jeff
+        # equiv: true && false && true
         if: |
           true
           
@@ -122,6 +140,12 @@ jobs:
           
           && true
         run: echo "it runs"
+
+      - name: CheckPlain
+        if: always() && steps.plain.outcome != 'skipped'
+        run: |
+          echo "Plain ran when it should not have"
+          exit 1
       - name: CheckFoo
         if: always() && steps.foo.outcome != 'success'
         run: |
@@ -167,6 +191,8 @@ jobs:
         run: |
           echo "Jeff ran when it should not have"
           exit 1
+
+
 
 
 
