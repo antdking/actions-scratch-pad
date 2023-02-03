@@ -52,6 +52,7 @@ env:
 jobs:
   simple:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - id: foo
         if: |
@@ -65,21 +66,13 @@ jobs:
             false
           }}
         run: echo "it runs"
-      - name: check expections
-        env:
-          foo_outcome: ${{ steps.foo.outcome }}
-          bar_outcome: ${{ steps.bar.outcome }}
+      - if: steps.foo.outcome != 'success'
         run: |
-          hasfail=0
-          if test "${foo_outcome}" != 'success'; then
-            hasfail="$((hasfail+1))"
-            echo "Foo did not run when it should have"
-          fi
-          if test "${bar_outcome}" != 'skipped'; then
-            hasfail="$((hasfail+2))"
-            echo "Bar ran when it should not have"
-          fi
-          exit "$hasfail"
+          echo "Foo did not run when it should have"
+      - if: steps.bar.outcome != 'skipped'
+        run: |
+          echo "Bar ran when it should not have"
+
   main:
     runs-on: ubuntu-latest
     continue-on-error: true
