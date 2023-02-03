@@ -141,6 +141,16 @@ jobs:
           
           && true
         run: echo "it runs"
+      
+      - id: stringyTrue
+        name: Stringy True
+        if: 'true'
+        run: echo "it runs"
+      
+      - id: stringyFalse
+        name: Stringy True
+        if: 'false'
+        run: echo "it runs"
 
       - name: CheckPlain
         if: always() && steps.plain.outcome != 'skipped'
@@ -191,6 +201,16 @@ jobs:
         if: always() && steps.jeff.outcome != 'skipped'
         run: |
           echo "Jeff ran when it should not have"
+          exit 1
+      - name: CheckStringyTrue
+        if: always() && steps.stringyTrue.outcome != 'success'
+        run: |
+          echo "stringyTrue did not run when it should have"
+          exit 1
+      - name: CheckStringyFalse
+        if: always() && steps.stringyFalse.outcome != 'skipped'
+        run: |
+          echo "stringyFalse ran when it should not have"
           exit 1
 
 
