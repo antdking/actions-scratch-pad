@@ -62,7 +62,7 @@ jobs:
       _SHOULDRUN_RESULT: "${{ matrix.shouldRun == 1 }}"
       EXIT_CODE: >-
         ${{
-          (matrix.shouldRun == 1) && 0 || 1
+          matrix.shouldRun == 0
         }}
     steps:
       - name: dump env context
