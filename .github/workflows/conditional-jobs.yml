@@ -18,6 +18,12 @@ jobs:
           echo "How did we get here...."
           exit 1
 
+  run-with-error:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+     - run: exit 1
+
   skips-due-to-needs:
     runs-on: ubuntu-latest
     needs: [never-runs]
@@ -90,3 +96,9 @@ jobs:
     steps:
       - run: |
           echo "Opposite day!"
+
+  maybe-runs--needs-say-continue:
+    needs: [run-with-error]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "did we make it"
