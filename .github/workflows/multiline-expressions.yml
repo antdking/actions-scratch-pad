@@ -72,7 +72,7 @@ jobs:
           }}
           
       - id: LITERAL_CHOMP_STRIP
-        name: LITERAL_CHOMP_CLIP
+        name: LITERAL_CHOMP_STRIP
         run: echo "I Ran!"
         if: |-
           ${{
@@ -81,7 +81,7 @@ jobs:
           }}
           
       - id: LITERAL_CHOMP_KEEP
-        name: LITERAL_CHOMP_CLIP
+        name: LITERAL_CHOMP_KEEP
         run: echo "I Ran!"
         if: |+
           ${{
@@ -90,7 +90,7 @@ jobs:
           }}
           
       - id: FOLDED_CHOMP_CLIP
-        name: LITERAL_CHOMP_CLIP
+        name: FOLDED_CHOMP_CLIP
         run: echo "I Ran!"
         if: >
           ${{
@@ -99,7 +99,7 @@ jobs:
           }}
           
       - id: FOLDED_CHOMP_STRIP
-        name: LITERAL_CHOMP_CLIP
+        name: FOLDED_CHOMP_STRIP
         run: echo "I Ran!"
         if: >-
           ${{
@@ -108,7 +108,7 @@ jobs:
           }}
           
       - id: FOLDED_CHOMP_KEEP
-        name: LITERAL_CHOMP_CLIP
+        name: FOLDED_CHOMP_KEEP
         run: echo "I Ran!"
         if: >+
           ${{
