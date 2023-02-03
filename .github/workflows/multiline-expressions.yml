@@ -70,6 +70,7 @@ jobs:
 
       # note, all of these have a blank link after the object
       - id: LITERAL_CHOMP_CLIP
+        run: exit "${EXIT_CODE}"
         if: |
           ${{
             true
