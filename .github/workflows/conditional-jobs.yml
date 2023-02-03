@@ -3,6 +3,8 @@ name: conditional jobs
 on:
   push:
     branches: [main]
+    paths:
+      - .github/workflows/conditional-jobs.yml
   workflow_dispatch: {}
 
 defaults:
