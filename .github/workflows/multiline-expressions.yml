@@ -90,7 +90,7 @@ jobs:
           echo "Bar ran when it should not have"
           exit 1
       - name: CheckZed
-        if: steps.bar.outcome != 'skipped'
+        if: steps.zed.outcome != 'skipped'
         run: |
           echo "Zed ran when it should not have"
           exit 1
