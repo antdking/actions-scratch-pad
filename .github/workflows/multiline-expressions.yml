@@ -1,0 +1,32 @@
+name: multiline expressions
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/multiline-expressions.yml
+  workflow_dispatch: {}
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  FOO_NO_CHOMP: |
+    ${{
+      true
+      && 'bar'
+    }}
+  FOO_CHOMP: |-
+    ${{
+      true
+      && 'bar'
+    }}
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${_ENV_CONTEXT}"
+        env:
+          _ENV_CONTEXT: ${{ toJSON(env) }}
