@@ -84,6 +84,8 @@ jobs:
         run: echo "it runs"
       - id: doodar
         name: Doodar
+        # the block is still a string
+        # equiv: format('true\n&& {0}\n&& true\n', false)
         if: |
           true
           && ${{
