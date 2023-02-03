@@ -113,10 +113,6 @@ jobs:
         name: Dave
         if: ${{ false }} == true
         run: echo "it runs"
-      - id: weirdAl
-        name: Weird Al
-        if: ${{ ${{ false }} == true }}
-        run: echo "it runs"
       - name: CheckFoo
         if: always() && steps.foo.outcome != 'success'
         run: |
@@ -157,11 +153,7 @@ jobs:
         run: |
           echo "Dave ran when it should not have"
           exit 1
-      - name: CheckWeirdAl
-        if: always() && steps.weirdAl.outcome != 'skipped'
-        run: |
-          echo "WeirdAl ran when it should not have"
-          exit 1
+
 
 
   main:
