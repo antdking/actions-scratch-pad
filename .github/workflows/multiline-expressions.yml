@@ -61,7 +61,6 @@ jobs:
     env:
       SHOULD_RUN: ${{ matrix.shouldRun }}
     steps:
-      # note, all of these have a blank link after the object
       - id: WRAPPED_LITERAL_CHOMP_CLIP
         name: WRAPPED_LITERAL_CHOMP_CLIP
         run: echo "I Ran!"
@@ -70,7 +69,7 @@ jobs:
             always()
             && matrix.shouldRun == 1
           }}
-          
+
       - id: WRAPPED_LITERAL_CHOMP_STRIP
         name: WRAPPED_LITERAL_CHOMP_STRIP
         run: echo "I Ran!"
@@ -79,7 +78,7 @@ jobs:
             always()
             && matrix.shouldRun == 1
           }}
-          
+
       - id: WRAPPED_LITERAL_CHOMP_KEEP
         name: WRAPPED_LITERAL_CHOMP_KEEP
         run: echo "I Ran!"
@@ -88,7 +87,7 @@ jobs:
             always()
             && matrix.shouldRun == 1
           }}
-          
+
       - id: WRAPPED_FOLDED_CHOMP_CLIP
         name: WRAPPED_FOLDED_CHOMP_CLIP
         run: echo "I Ran!"
@@ -97,7 +96,7 @@ jobs:
             always()
             && matrix.shouldRun == 1
           }}
-          
+
       - id: WRAPPED_FOLDED_CHOMP_STRIP
         name: WRAPPED_FOLDED_CHOMP_STRIP
         run: echo "I Ran!"
@@ -106,11 +105,184 @@ jobs:
             always()
             && matrix.shouldRun == 1
           }}
-          
+
       - id: WRAPPED_FOLDED_CHOMP_KEEP
         name: WRAPPED_FOLDED_CHOMP_KEEP
         run: echo "I Ran!"
         if: >+
+          ${{
+            always()
+            && matrix.shouldRun == 1
+          }}
+      - id: WRAPPED_LEADING_LITERAL_CHOMP_CLIP
+        name: WRAPPED_LEADING_LITERAL_CHOMP_CLIP
+        run: echo "I Ran!"
+        if: |
+          
+          ${{
+            always()
+            && matrix.shouldRun == 1
+          }}
+
+      - id: WRAPPED_LEADING_LITERAL_CHOMP_STRIP
+        name: WRAPPED_LEADING_LITERAL_CHOMP_STRIP
+        run: echo "I Ran!"
+        if: |-
+          
+          ${{
+            always()
+            && matrix.shouldRun == 1
+          }}
+
+      - id: WRAPPED_LEADING_LITERAL_CHOMP_KEEP
+        name: WRAPPED_LEADING_LITERAL_CHOMP_KEEP
+        run: echo "I Ran!"
+        if: |+
+          
+          ${{
+            always()
+            && matrix.shouldRun == 1
+          }}
+
+      - id: WRAPPED_LEADING_FOLDED_CHOMP_CLIP
+        name: WRAPPED_LEADING_FOLDED_CHOMP_CLIP
+        run: echo "I Ran!"
+        if: >
+          
+          ${{
+            always()
+            && matrix.shouldRun == 1
+          }}
+
+      - id: WRAPPED_LEADING_FOLDED_CHOMP_STRIP
+        name: WRAPPED_LEADING_FOLDED_CHOMP_STRIP
+        run: echo "I Ran!"
+        if: >-
+          
+          ${{
+            always()
+            && matrix.shouldRun == 1
+          }}
+
+      - id: WRAPPED_LEADING_FOLDED_CHOMP_KEEP
+        name: WRAPPED_LEADING_FOLDED_CHOMP_KEEP
+        run: echo "I Ran!"
+        if: >+
+          
+          ${{
+            always()
+            && matrix.shouldRun == 1
+          }}
+
+      - id: WRAPPED_DANGLING_LITERAL_CHOMP_CLIP
+        name: WRAPPED_DANGLING_LITERAL_CHOMP_CLIP
+        run: echo "I Ran!"
+        if: |
+          ${{
+            always()
+            && matrix.shouldRun == 1
+          }}
+          
+      - id: WRAPPED_DANGLING_LITERAL_CHOMP_STRIP
+        name: WRAPPED_DANGLING_LITERAL_CHOMP_STRIP
+        run: echo "I Ran!"
+        if: |-
+          ${{
+            always()
+            && matrix.shouldRun == 1
+          }}
+          
+      - id: WRAPPED_DANGLING_LITERAL_CHOMP_KEEP
+        name: WRAPPED_DANGLING_LITERAL_CHOMP_KEEP
+        run: echo "I Ran!"
+        if: |+
+          ${{
+            always()
+            && matrix.shouldRun == 1
+          }}
+          
+      - id: WRAPPED_DANGLING_FOLDED_CHOMP_CLIP
+        name: WRAPPED_DANGLING_FOLDED_CHOMP_CLIP
+        run: echo "I Ran!"
+        if: >
+          ${{
+            always()
+            && matrix.shouldRun == 1
+          }}
+          
+      - id: WRAPPED_DANGLING_FOLDED_CHOMP_STRIP
+        name: WRAPPED_DANGLING_FOLDED_CHOMP_STRIP
+        run: echo "I Ran!"
+        if: >-
+          ${{
+            always()
+            && matrix.shouldRun == 1
+          }}
+          
+      - id: WRAPPED_DANGLING_FOLDED_CHOMP_KEEP
+        name: WRAPPED_DANGLING_FOLDED_CHOMP_KEEP
+        run: echo "I Ran!"
+        if: >+
+          ${{
+            always()
+            && matrix.shouldRun == 1
+          }}
+          
+      - id: WRAPPED_LEADING_DANGLING_LITERAL_CHOMP_CLIP
+        name: WRAPPED_LEADING_DANGLING_LITERAL_CHOMP_CLIP
+        run: echo "I Ran!"
+        if: |
+          
+          ${{
+            always()
+            && matrix.shouldRun == 1
+          }}
+          
+      - id: WRAPPED_LEADING_DANGLING_LITERAL_CHOMP_STRIP
+        name: WRAPPED_LEADING_DANGLING_LITERAL_CHOMP_STRIP
+        run: echo "I Ran!"
+        if: |-
+          
+          ${{
+            always()
+            && matrix.shouldRun == 1
+          }}
+          
+      - id: WRAPPED_LEADING_DANGLING_LITERAL_CHOMP_KEEP
+        name: WRAPPED_LEADING_DANGLING_LITERAL_CHOMP_KEEP
+        run: echo "I Ran!"
+        if: |+
+          
+          ${{
+            always()
+            && matrix.shouldRun == 1
+          }}
+          
+      - id: WRAPPED_LEADING_DANGLING_FOLDED_CHOMP_CLIP
+        name: WRAPPED_LEADING_DANGLING_FOLDED_CHOMP_CLIP
+        run: echo "I Ran!"
+        if: >
+          
+          ${{
+            always()
+            && matrix.shouldRun == 1
+          }}
+          
+      - id: WRAPPED_LEADING_DANGLING_FOLDED_CHOMP_STRIP
+        name: WRAPPED_LEADING_DANGLING_FOLDED_CHOMP_STRIP
+        run: echo "I Ran!"
+        if: >-
+          
+          ${{
+            always()
+            && matrix.shouldRun == 1
+          }}
+          
+      - id: WRAPPED_LEADING_DANGLING_FOLDED_CHOMP_KEEP
+        name: WRAPPED_LEADING_DANGLING_FOLDED_CHOMP_KEEP
+        run: echo "I Ran!"
+        if: >+
+          
           ${{
             always()
             && matrix.shouldRun == 1
