@@ -3,6 +3,8 @@ name: conditional steps
 on:
   push:
     branches: [main]
+    paths:
+      - .github/workflows/conditional-steps.yml
   workflow_dispatch: {}
 
 defaults:
