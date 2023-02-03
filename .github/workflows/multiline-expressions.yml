@@ -57,66 +57,82 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        exitCode: [1, 0]
+        shouldRun: [1, 0]
     env:
-      EXIT_CODE: ${{ matrix.exitCode }}
-      SHOULD_RUN: ${{ matrix.exitCode == 0 }}
+      SHOULD_RUN: ${{ matrix.shouldRun }}
     steps:
       # note, all of these have a blank link after the object
       - id: LITERAL_CHOMP_CLIP
         name: LITERAL_CHOMP_CLIP
-        run: exit "${EXIT_CODE}"
+        run: echo "I Ran!"
         if: |
           ${{
             always()
-            && env.SHOULD_RUN == 1
+            && matrix.shouldRun == 1
           }}
           
       - id: LITERAL_CHOMP_STRIP
         name: LITERAL_CHOMP_CLIP
-        run: exit "${EXIT_CODE}"
+        run: echo "I Ran!"
         if: |-
           ${{
             always()
-            && env.SHOULD_RUN == 1
+            && matrix.shouldRun == 1
           }}
           
       - id: LITERAL_CHOMP_KEEP
         name: LITERAL_CHOMP_CLIP
-        run: exit "${EXIT_CODE}"
+        run: echo "I Ran!"
         if: |+
           ${{
             always()
-            && env.SHOULD_RUN == 1
+            && matrix.shouldRun == 1
           }}
           
       - id: FOLDED_CHOMP_CLIP
         name: LITERAL_CHOMP_CLIP
-        run: exit "${EXIT_CODE}"
+        run: echo "I Ran!"
         if: >
           ${{
             always()
-            && env.SHOULD_RUN == 1
+            && matrix.shouldRun == 1
           }}
           
       - id: FOLDED_CHOMP_STRIP
         name: LITERAL_CHOMP_CLIP
-        run: exit "${EXIT_CODE}"
+        run: echo "I Ran!"
         if: >-
           ${{
             always()
-            && env.SHOULD_RUN == 1
+            && matrix.shouldRun == 1
           }}
           
       - id: FOLDED_CHOMP_KEEP
         name: LITERAL_CHOMP_CLIP
-        run: exit "${EXIT_CODE}"
+        run: echo "I Ran!"
         if: >+
           ${{
             always()
-            && env.SHOULD_RUN == 1
+            && matrix.shouldRun == 1
           }}
           
+      - name: fail if any skipped when they should run
+        if: |
+          always()
+          && matrix.shouldRun == 1
+          && contains(steps.*.outcome, 'skipped')
+        run: exit 1
+
+      - name: fail if any ran while when they should not run
+        if: |
+          always()
+          && matrix.shouldRun == 0
+          && (
+            contains(steps.*.outcome, 'success')
+            || contains(steps.*.outcome, 'failure')
+          )
+        run: exit 1
+
       - name: dump results
         if: always()
         env:
