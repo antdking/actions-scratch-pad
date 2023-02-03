@@ -53,7 +53,7 @@ jobs:
   main:
     runs-on: ubuntu-latest
     continue-on-error: true
-    name: "main SHOULD_RUN=${{ matrix.exitCode == 0 }}"
+    name: "main SHOULD_RUN=${{ matrix.shouldRun }}"
     strategy:
       fail-fast: false
       matrix:
@@ -62,8 +62,8 @@ jobs:
       SHOULD_RUN: ${{ matrix.shouldRun }}
     steps:
       # note, all of these have a blank link after the object
-      - id: LITERAL_CHOMP_CLIP
-        name: LITERAL_CHOMP_CLIP
+      - id: WRAPPED_LITERAL_CHOMP_CLIP
+        name: WRAPPED_LITERAL_CHOMP_CLIP
         run: echo "I Ran!"
         if: |
           ${{
@@ -71,8 +71,8 @@ jobs:
             && matrix.shouldRun == 1
           }}
           
-      - id: LITERAL_CHOMP_STRIP
-        name: LITERAL_CHOMP_STRIP
+      - id: WRAPPED_LITERAL_CHOMP_STRIP
+        name: WRAPPED_LITERAL_CHOMP_STRIP
         run: echo "I Ran!"
         if: |-
           ${{
@@ -80,8 +80,8 @@ jobs:
             && matrix.shouldRun == 1
           }}
           
-      - id: LITERAL_CHOMP_KEEP
-        name: LITERAL_CHOMP_KEEP
+      - id: WRAPPED_LITERAL_CHOMP_KEEP
+        name: WRAPPED_LITERAL_CHOMP_KEEP
         run: echo "I Ran!"
         if: |+
           ${{
@@ -89,8 +89,8 @@ jobs:
             && matrix.shouldRun == 1
           }}
           
-      - id: FOLDED_CHOMP_CLIP
-        name: FOLDED_CHOMP_CLIP
+      - id: WRAPPED_FOLDED_CHOMP_CLIP
+        name: WRAPPED_FOLDED_CHOMP_CLIP
         run: echo "I Ran!"
         if: >
           ${{
@@ -98,8 +98,8 @@ jobs:
             && matrix.shouldRun == 1
           }}
           
-      - id: FOLDED_CHOMP_STRIP
-        name: FOLDED_CHOMP_STRIP
+      - id: WRAPPED_FOLDED_CHOMP_STRIP
+        name: WRAPPED_FOLDED_CHOMP_STRIP
         run: echo "I Ran!"
         if: >-
           ${{
@@ -107,8 +107,8 @@ jobs:
             && matrix.shouldRun == 1
           }}
           
-      - id: FOLDED_CHOMP_KEEP
-        name: FOLDED_CHOMP_KEEP
+      - id: WRAPPED_FOLDED_CHOMP_KEEP
+        name: WRAPPED_FOLDED_CHOMP_KEEP
         run: echo "I Ran!"
         if: >+
           ${{
@@ -116,6 +116,50 @@ jobs:
             && matrix.shouldRun == 1
           }}
           
+      - id: LITERAL_CHOMP_CLIP
+        name: LITERAL_CHOMP_CLIP
+        run: echo "I Ran!"
+        if: |
+          always()
+          && matrix.shouldRun == 1
+          
+      - id: LITERAL_CHOMP_STRIP
+        name: LITERAL_CHOMP_STRIP
+        run: echo "I Ran!"
+        if: |-
+          always()
+          && matrix.shouldRun == 1
+          
+      - id: LITERAL_CHOMP_KEEP
+        name: LITERAL_CHOMP_KEEP
+        run: echo "I Ran!"
+        if: |+
+          always()
+          && matrix.shouldRun == 1
+          
+      - id: FOLDED_CHOMP_CLIP
+        name: FOLDED_CHOMP_CLIP
+        run: echo "I Ran!"
+        if: >
+          always()
+          && matrix.shouldRun == 1
+          
+      - id: FOLDED_CHOMP_STRIP
+        name: FOLDED_CHOMP_STRIP
+        run: echo "I Ran!"
+        if: >-
+          always()
+          && matrix.shouldRun == 1
+          
+      - id: FOLDED_CHOMP_KEEP
+        name: FOLDED_CHOMP_KEEP
+        run: echo "I Ran!"
+        if: >+
+          always()
+          && matrix.shouldRun == 1
+          
+
+      # validation
       - name: fail if any skipped when they should run
         if: |
           always()
