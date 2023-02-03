@@ -100,5 +100,11 @@ jobs:
   maybe-runs--needs-say-continue:
     needs: [run-with-error]
     runs-on: ubuntu-latest
+    env:
+      JOB_CONTEXT: "${{ toJSON(job) }}"
+      NEEDS_CONTEXT: "${{ toJSON(needs) }}"
     steps:
-      - run: echo "did we make it"
+      - run: |
+          echo "did we make it"
+          echo "$JOB_CONTEXT" | jq 
+          echo "$NEEDS_CONTEXT" | jq
