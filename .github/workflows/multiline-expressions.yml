@@ -69,9 +69,11 @@ jobs:
       - if: steps.foo.outcome != 'success'
         run: |
           echo "Foo did not run when it should have"
+          exit 1
       - if: steps.bar.outcome != 'skipped'
         run: |
           echo "Bar ran when it should not have"
+          exit 1
 
   main:
     runs-on: ubuntu-latest
