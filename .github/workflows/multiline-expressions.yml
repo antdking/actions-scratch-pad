@@ -53,14 +53,16 @@ jobs:
   main:
     runs-on: ubuntu-latest
     continue-on-error: true
+    name: "shouldRun=${{ matrix.shouldRun }}"
     strategy:
       fail-fast: false
       matrix:
         shouldRun: [1, 0]
     env:
+      _SHOULDRUN_RESULT: "${{ matrix.shouldRun == 1 }}"
       EXIT_CODE: >-
         ${{
-          (strategy.shouldRun == 1) && 0 || 1
+          (matrix.shouldRun == 1) && 0 || 1
         }}
     steps:
       - name: dump env context
@@ -70,30 +72,34 @@ jobs:
 
       # note, all of these have a blank link after the object
       - id: LITERAL_CHOMP_CLIP
+        name: LITERAL_CHOMP_CLIP
         run: exit "${EXIT_CODE}"
         if: |
           ${{
-            true
+            always()
             && matrix.shouldRun == 1
           }}
           
       - id: LITERAL_CHOMP_STRIP
+        name: LITERAL_CHOMP_CLIP
         run: exit "${EXIT_CODE}"
         if: |-
           ${{
-            true
+            always()
             && matrix.shouldRun == 1
           }}
           
       - id: LITERAL_CHOMP_KEEP
+        name: LITERAL_CHOMP_CLIP
         run: exit "${EXIT_CODE}"
         if: |+
           ${{
-            true
+            always()
             && matrix.shouldRun == 1
           }}
           
       - id: FOLDED_CHOMP_CLIP
+        name: LITERAL_CHOMP_CLIP
         run: exit "${EXIT_CODE}"
         if: >
           ${{
@@ -102,22 +108,35 @@ jobs:
           }}
           
       - id: FOLDED_CHOMP_STRIP
+        name: LITERAL_CHOMP_CLIP
         run: exit "${EXIT_CODE}"
         if: >-
           ${{
-            true
+            always()
             && matrix.shouldRun == 1
           }}
           
       - id: FOLDED_CHOMP_KEEP
+        name: LITERAL_CHOMP_CLIP
         run: exit "${EXIT_CODE}"
         if: >+
           ${{
-            true
+            always()
             && matrix.shouldRun == 1
           }}
           
       - name: dump results
+        if: always()
         env:
           _STEPS_CONTEXT: ${{ toJSON(steps) }}
-        run: echo "${_STEPS_CONTEXT}"
+          _JOB_CONTEXT: ${{ toJSON(job) }}
+          _STRATEGY_CONTEXT: ${{ toJSON(strategy) }}
+          _MATRIX_CONTEXT: ${{ toJSON(matrix) }}
+          _STEP_ENV_CONTEXT: ${{ toJSON(env) }}
+        run: |
+          echo "steps: ${_STEPS_CONTEXT}"
+          echo "job: ${_JOB_CONTEXT}"
+          echo "strategy: ${_STRATEGY_CONTEXT}"
+          echo "matrix: ${_MATRIX_CONTEXT}"
+          echo "job env: ${_ENV_CONTEXT}"
+          echo "step env: ${_STEP_ENV_CONTEXT}"
