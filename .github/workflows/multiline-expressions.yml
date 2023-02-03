@@ -55,22 +55,26 @@ jobs:
     continue-on-error: true
     steps:
       - id: foo
+        name: Foo
         if: |
           ${{
             true
           }}
         run: echo "it runs"
       - id: bar
+        name: Bar
         if: |
           ${{
             false
           }}
         run: echo "it runs"
-      - if: steps.foo.outcome != 'success'
+      - name: CheckFoo
+        if: steps.foo.outcome != 'success'
         run: |
           echo "Foo did not run when it should have"
           exit 1
-      - if: steps.bar.outcome != 'skipped'
+      - name: CheckBar
+        if: steps.bar.outcome != 'skipped'
         run: |
           echo "Bar ran when it should not have"
           exit 1
