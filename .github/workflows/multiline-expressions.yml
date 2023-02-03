@@ -144,12 +144,19 @@ jobs:
       
       - id: stringyTrue
         name: Stringy True
+        # equiv: true
         if: 'true'
         run: echo "it runs"
       
       - id: stringyFalse
-        name: Stringy True
+        name: Stringy False
+        # equiv: false
         if: 'false'
+        run: echo "it runs"
+      
+      - id: wrappedStringyFalse
+        name: wrapped stringy false
+        if: ${{ 'false' }}
         run: echo "it runs"
 
       - name: CheckPlain
@@ -211,6 +218,11 @@ jobs:
         if: always() && steps.stringyFalse.outcome != 'skipped'
         run: |
           echo "stringyFalse ran when it should not have"
+          exit 1
+      - name: CheckStringyFalse
+        if: always() && steps.wrappedStringyFalse.outcome != 'skipped'
+        run: |
+          echo "wrappedStringyFalse ran when it should not have"
           exit 1
 
 
