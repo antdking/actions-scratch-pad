@@ -57,6 +57,7 @@ jobs:
       - id: foo
         name: Foo
         # runs because the string "true\n" is truthy
+        # equiv: format('{0}\n', true)
         if: |
           ${{
             true
@@ -65,6 +66,7 @@ jobs:
       - id: bar
         name: Bar
         # runs because the string "false\n" is truthy
+        # equiv: format('{0}\n', false)
         if: |
           ${{
             false
@@ -72,9 +74,19 @@ jobs:
         run: echo "it runs"
       - id: zed
         name: Zed
-        # Skips as the expression "false && true" is falsy
+        # runs as '&& true' is added as string ("false\n&& true\n")
+        # equiv: format('{0}\n&& true\n', false)
         if: |
           ${{
+            false
+          }}
+          && true
+        run: echo "it runs"
+      - id: doodar
+        name: Doodar
+        if: |
+          true
+          && ${{
             false
           }}
           && true
@@ -93,6 +105,11 @@ jobs:
         if: always() && steps.zed.outcome != 'skipped'
         run: |
           echo "Zed ran when it should not have"
+          exit 1
+      - name: CheckDoodar
+        if: always() && steps.doodar.outcome != 'skipped'
+        run: |
+          echo "Doodar ran when it should not have"
           exit 1
 
 
