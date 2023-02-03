@@ -3,6 +3,8 @@ name: string comparisons
 on:
   push:
     branches: [main]
+    paths:
+      - .github/workflows/string-comparisons.yml
   workflow_dispatch: {}
 
 defaults:
