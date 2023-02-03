@@ -12,21 +12,111 @@ defaults:
     shell: bash
 
 env:
-  FOO_NO_CHOMP: |
+  # note, all of these have a blank link after the object
+  LITERAL_CHOMP_CLIP: |
     ${{
       true
       && 'bar'
     }}
-  FOO_CHOMP: |-
+    
+  LITERAL_CHOMP_STRIP: |-
     ${{
       true
       && 'bar'
     }}
-
+    
+  LITERAL_CHOMP_KEEP: |+
+    ${{
+      true
+      && 'bar'
+    }}
+    
+  FOLDED_CHOMP_CLIP: >
+    ${{
+      true
+      && 'bar'
+    }}
+    
+  FOLDED_CHOMP_STRIP: >-
+    ${{
+      true
+      && 'bar'
+    }}
+    
+  FOLDED_CHOMP_KEEP: >+
+    ${{
+      true
+      && 'bar'
+    }}
+    
 jobs:
   main:
     runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        shouldRun: [1, 0]
+    env:
+      EXIT_CODE: >-
+        ${{
+          (strategy.shouldRun == 1) && 0 || 1
+        }}
     steps:
-      - run: echo "${_ENV_CONTEXT}"
+      - name: dump env context
+        run: echo "${_ENV_CONTEXT}"
         env:
           _ENV_CONTEXT: ${{ toJSON(env) }}
+
+      # note, all of these have a blank link after the object
+      - id: LITERAL_CHOMP_CLIP
+        if: |
+          ${{
+            true
+            && matrix.shouldRun == 1
+          }}
+          
+      - id: LITERAL_CHOMP_STRIP
+        run: exit "${EXIT_CODE}"
+        if: |-
+          ${{
+            true
+            && matrix.shouldRun == 1
+          }}
+          
+      - id: LITERAL_CHOMP_KEEP
+        run: exit "${EXIT_CODE}"
+        if: |+
+          ${{
+            true
+            && matrix.shouldRun == 1
+          }}
+          
+      - id: FOLDED_CHOMP_CLIP
+        run: exit "${EXIT_CODE}"
+        if: >
+          ${{
+            true
+            && matrix.shouldRun == 1
+          }}
+          
+      - id: FOLDED_CHOMP_STRIP
+        run: exit "${EXIT_CODE}"
+        if: >-
+          ${{
+            true
+            && matrix.shouldRun == 1
+          }}
+          
+      - id: FOLDED_CHOMP_KEEP
+        run: exit "${EXIT_CODE}"
+        if: >+
+          ${{
+            true
+            && matrix.shouldRun == 1
+          }}
+          
+      - name: dump results
+        env:
+          _STEPS_CONTEXT: ${{ toJSON(steps) }}
+        run: echo "${_STEPS_CONTEXT}"
