@@ -99,6 +99,16 @@ jobs:
           true && ${{ false }}
           && true
         run: echo "it runs"
+      - id: eggzTrimmed
+        name: Eggz Trimmed
+        if: |-
+          true && ${{ false }}
+          && true
+        run: echo "it runs"
+      - id: fred
+        name: Fred
+        if: true && ${{ false }} && true
+        run: echo "it runs"
       - name: CheckFoo
         if: always() && steps.foo.outcome != 'success'
         run: |
@@ -123,6 +133,16 @@ jobs:
         if: always() && steps.eggz.outcome != 'skipped'
         run: |
           echo "Eggz ran when it should not have"
+          exit 1
+      - name: CheckEggzTrimmed
+        if: always() && steps.eggzTrimmed.outcome != 'skipped'
+        run: |
+          echo "Eggz Trimmed ran when it should not have"
+          exit 1
+      - name: CheckFred
+        if: always() && steps.fred.outcome != 'skipped'
+        run: |
+          echo "Fred ran when it should not have"
           exit 1
 
 
