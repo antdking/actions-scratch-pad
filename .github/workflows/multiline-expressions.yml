@@ -80,17 +80,17 @@ jobs:
           && true
         run: echo "it runs"
       - name: CheckFoo
-        if: steps.foo.outcome != 'success'
+        if: always() && steps.foo.outcome != 'success'
         run: |
           echo "Foo did not run when it should have"
           exit 1
       - name: CheckBar
-        if: steps.bar.outcome != 'skipped'
+        if: always() && steps.bar.outcome != 'skipped'
         run: |
           echo "Bar ran when it should not have"
           exit 1
       - name: CheckZed
-        if: steps.zed.outcome != 'skipped'
+        if: always() && steps.zed.outcome != 'skipped'
         run: |
           echo "Zed ran when it should not have"
           exit 1
