@@ -78,6 +78,7 @@ jobs:
             false
           }}
           && true
+        run: echo "it runs"
       - name: CheckFoo
         if: steps.foo.outcome != 'success'
         run: |
