@@ -255,6 +255,7 @@ jobs:
         run: echo "it runs"
       
       - name: "{{ NaN }}{{ NaN }}"
+        # equiv: string 'NaNNaN'
         if: ${{ NaN }}${{ NaN }}
         run: echo "it runs"
 
