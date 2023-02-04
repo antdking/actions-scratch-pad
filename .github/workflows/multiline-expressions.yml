@@ -264,6 +264,12 @@ jobs:
         # falsy!
         if: join(fromJSON('[null, null, "", "", null]'), '')
         run: echo "it runs"
+      
+      - name: "{{ '' }}{{ null }}{{ null }}{{ '' }}{{ '' }}"
+        # equiv: ''
+        # falsy!
+        if: ${{ '' }}${{ null }}${{ null }}${{ '' }}${{ '' }}
+        run: echo "it runs"
 
   stringFalse:
     runs-on: ubuntu-latest
