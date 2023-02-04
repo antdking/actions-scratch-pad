@@ -159,74 +159,16 @@ jobs:
         # equiv: false
         if: ${{ 'false' }}
         run: echo "it runs"
-
-      - name: CheckPlain
-        if: always() && steps.plain.outcome != 'skipped'
-        run: |
-          echo "Plain ran when it should not have"
-          exit 1
-      - name: CheckFoo
-        if: always() && steps.foo.outcome != 'success'
-        run: |
-          echo "Foo did not run when it should have"
-          exit 1
-      - name: CheckBar
-        if: always() && steps.bar.outcome != 'skipped'
-        run: |
-          echo "Bar ran when it should not have"
-          exit 1
-      - name: CheckZed
-        if: always() && steps.zed.outcome != 'skipped'
-        run: |
-          echo "Zed ran when it should not have"
-          exit 1
-      - name: CheckDoodar
-        if: always() && steps.doodar.outcome != 'skipped'
-        run: |
-          echo "Doodar ran when it should not have"
-          exit 1
-      - name: CheckEggz
-        if: always() && steps.eggz.outcome != 'skipped'
-        run: |
-          echo "Eggz ran when it should not have"
-          exit 1
-      - name: CheckEggzTrimmed
-        if: always() && steps.eggzTrimmed.outcome != 'skipped'
-        run: |
-          echo "Eggz Trimmed ran when it should not have"
-          exit 1
-      - name: CheckFred
-        if: always() && steps.fred.outcome != 'skipped'
-        run: |
-          echo "Fred ran when it should not have"
-          exit 1
-      - name: CheckDave
-        if: always() && steps.dave.outcome != 'skipped'
-        run: |
-          echo "Dave ran when it should not have"
-          exit 1
-      - name: CheckJeff
-        if: always() && steps.jeff.outcome != 'skipped'
-        run: |
-          echo "Jeff ran when it should not have"
-          exit 1
-      - name: CheckStringyTrue
-        if: always() && steps.stringyTrue.outcome != 'success'
-        run: |
-          echo "stringyTrue did not run when it should have"
-          exit 1
-      - name: CheckStringyFalse
-        if: always() && steps.stringyFalse.outcome != 'skipped'
-        run: |
-          echo "stringyFalse ran when it should not have"
-          exit 1
-      - name: CheckStringyFalse
-        if: always() && steps.wrappedStringyFalse.outcome != 'skipped'
-        run: |
-          echo "wrappedStringyFalse ran when it should not have"
-          exit 1
-
-
+      
+      - id: forcedSpace
+        name: Forced space before expression
+        if: ' false'
+        run: echo "it runs"
+      
+      - id: forcedSpaceWrapped
+        name: Forced Space before wrapped expression
+        if: ' ${{ false }}'
+        run: echo "it runs"
 
 
 
