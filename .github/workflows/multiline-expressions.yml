@@ -173,69 +173,96 @@ jobs:
         run: echo "it runs"
 
       - name: "format('{0}', false)"
+        # equiv: string 'false'
         if: format('{0}', false)
         run: echo "it runs"
       
       - name: "{{ format('{0}', false)"
+        # equiv: string 'false'
         if: ${{ format('{0}', false) }}
         run: echo "it runs"
       
       - name: "env.forced_string_false"
+        # equiv: string 'false'
         if: env.forced_string_false
         run: echo "it runs"
       
       - name: "{{ env.forced_string_false }}"
+        # equiv: string 'false'
         if: ${{ env.forced_string_false }}
         run: echo "it runs"
       
       - name: "env.literal_string_false"
+        # equiv: string 'false'
         if: env.literal_string_false
         run: echo "it runs"
       
       - name: "{{ env.literal_string_false }}"
+        # equiv: string 'false'
         if: ${{ env.literal_string_false }}
         run: echo "it runs"
       
       - name: "env.actual_false"
+        # equiv: string 'false'
         if: env.actual_false
         run: echo "it runs"
       
       - name: "{{ env.actual_false }}"
+        # env is string
         if: ${{ env.actual_false }}
         run: echo "it runs"
       
       - name: "{{ false }}{{ '' }}"
+        # equiv: string 'false'
         if: ${{ false }}${{ '' }}
         run: echo "it runs"
       
       - name: "{{ '' }}{{ '' }}"
+        # equiv: ''
+        # Falsy!
         if: ${{ '' }}${{ '' }}
         run: echo "it runs"
       
       - name: "{{ 0 }}{{ '' }}"
+        # equiv: string '0'
         if: ${{ 0 }}${{ '' }}
         run: echo "it runs"
       
       - name: "{{ 0 }}{{ 0 }}"
+        # equiv: '00'
         if: ${{ 0 }}${{ 0 }}
         run: echo "it runs"
       
       - name: "{{ false }}{{ false }}"
+        # equiv: 'falsefalse'
         if: ${{ false }}${{ false }}
         run: echo "it runs"
       
       - name: "{{ false }}{{ null }}"
+        # equiv: string 'false'
         if: ${{ false }}${{ null }}
         run: echo "it runs"
       
       - name: "{{ null }}{{ null }}"
+        # equiv: empty string ''
+        # Falsy!
         if: ${{ null }}${{ null }}
         run: echo "it runs"
       
       - name: "{{ 0 }}{{ null }}"
+        # equiv: string '0'
         if: ${{ 0 }}${{ null }}
         run: echo "it runs"
       
+      - name: "{{ NaN }}{{ NaN }}"
+        if: ${{ NaN }}${{ NaN }}
+        run: echo "it runs"
+
+      - name: show Join is better than concatonating {{ '' }}{{ '' }}
+        # equiv: string ''
+        # falsy!
+        if: join(fromJSON('[null, null, "", "", null]'))
+        run: echo "it runs"
 
   stringFalse:
     runs-on: ubuntu-latest
