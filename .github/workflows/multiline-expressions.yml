@@ -205,7 +205,27 @@ jobs:
         run: echo "it runs"
       
       - name: "{{ false }}{{ '' }}"
-        if: ${{ false }}{{ '' }}
+        if: ${{ false }}${{ '' }}
+        run: echo "it runs"
+      
+      - name: "{{ '' }}{{ '' }}"
+        if: ${{ '' }}${{ '' }}"
+        run: echo "it runs"
+      
+      - name: "{{ 0 }}{{ '' }}"
+        if: ${{ 0 }}${{ '' }}
+        run: echo "it runs"
+      
+      - name: "{{ 0 }}{{ 0 }}"
+        if: ${{ 0 }}${{ 0 }}
+        run: echo "it runs"
+      
+      - name: "{{ false }}{{ false }}"
+        if: ${{ false }}${{ false }}
+        run: echo "it runs"
+      
+      - name: "{{ false }}{{ null }}"
+        if: ${{ false }}${{ null }}
         run: echo "it runs"
       
 
