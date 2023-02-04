@@ -60,8 +60,10 @@ jobs:
         if: ${{ false }}
         run: echo "this runs"
 
-      - id: foo
-        name: Foo
+      - name: |
+          {{
+            true
+          }}
         # runs because the string "true\n" is truthy
         # equiv: format('{0}\n', true)
         if: |
@@ -170,6 +172,7 @@ jobs:
         if: ' ${{ false }}'
         run: echo "it runs"
 
+     
 
 
   main:
