@@ -272,38 +272,65 @@ jobs:
         run: echo "it runs"
 
       - name: "github.repository == 'antdking/actions-scratch-pad'"
+        # equiv: true
         if: github.repository == 'antdking/actions-scratch-pad'
         run: echo "it runs"
 
       - name: '{{ github.repository }} == "antdking/actions-scratch-pad"'
+        # equiv: literal string 'antdking/actions-scratch-pad == "antdking/actions-scratch-pad"'
+        # always truthy
         if: ${{ github.repository }} == "antdking/actions-scratch-pad"
         run: echo "it runs"
       
       - name: "{{ github.repository }} == 'antdking/actions-scratch-pad'"
+        # equiv: literal string "antdking/actions-scratch-pad == 'antdking/actions-scratch-pad'"
+        # always truthy
         if: ${{ github.repository }} == 'antdking/actions-scratch-pad'
+        run: echo "it runs"
+      
+      - name: "{{ github.repository }} == '__never_a_repo__'"
+        # equiv: literal string "antdking/actions-scratch-pad == '__never_a_repo__'"
+        # always truthy
+        if: ${{ github.repository }} == '__never_a_repo__'
+        run: echo "it runs"
+
+      - name: '{{ github.repository }} == "__never_a_repo__"'
+        # equiv: literal string 'antdking/actions-scratch-pad == "__never_a_repo__"'
+        # always truthy
+        if: ${{ github.repository }} == "__never_a_repo__"
         run: echo "it runs"
 
       - name: "{{ github.repository == 'antdking/actions-scratch-pad' }}"
+        # equiv: true
         if: ${{ github.repository == 'antdking/actions-scratch-pad' }}
         run: echo "it runs"
 
       - name: "github.repository != 'antdking/actions-scratch-pad'"
+        # equiv: false
         if: github.repository != 'antdking/actions-scratch-pad'
         run: echo "it runs"
 
       - name: '{{ github.repository }} != "antdking/actions-scratch-pad"'
+        # equiv: string 'antdking/actions-scratch-pad != "antdking/actions-scratch-pad"'
+        # always truty
         if: ${{ github.repository }} != "antdking/actions-scratch-pad"
         run: echo "it runs"
       
       - name: "{{ github.repository }} != 'antdking/actions-scratch-pad'"
+        # equiv: string "antdking/actions-scratch-pad != 'antdking/actions-scratch-pad'"
+        # always truthy
         if: ${{ github.repository }} != 'antdking/actions-scratch-pad'
         run: echo "it runs"
 
       - name: "{{ github.repository != 'antdking/actions-scratch-pad'"
+        # equiv: false
         if: ${{ github.repository != 'antdking/actions-scratch-pad' }}
         run: echo "it runs"
 
       - name: "( {{ false }} ) && true"
+        # equiv: string '( false ) && true'
+        # equiv: format('( {0} ) && true', false)
+        # always truthy
         if: ( ${{ false }} ) && true
         run: echo "it runs"
 
