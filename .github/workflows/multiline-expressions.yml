@@ -54,7 +54,8 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     env:
-      string_false: "${{ 'fal' }}${{ 'se' }}"
+      forced_string_false: "${{ 'fal' }}${{ 'se' }}"
+      literal_string_false: 'false'
     steps:
       - name: '{{ false }}'
         # equiv: false
@@ -178,14 +179,22 @@ jobs:
         if: ${{ format('{0}', false) }}
         run: echo "it runs"
       
-      - name: "env.string_false"
-        if: env.string_false
+      - name: "env.forced_string_false"
+        if: env.forced_string_false
         run: echo "it runs"
       
-      - name: "{{ env.string_false }}"
-        if: ${{ env.string_false }}
+      - name: "{{ env.forced_string_false }}"
+        if: ${{ env.forced_string_false }}
         run: echo "it runs"
       
+      - name: "env.literal_string_false"
+        if: env.literal_string_false
+        run: echo "it runs"
+      
+      - name: "{{ env.literal_string_false }}"
+        if: ${{ env.literal_string_false }}
+        run: echo "it runs"
+
   testingSomething:
     runs-on: ubuntu-latest
     continue-on-error: true
