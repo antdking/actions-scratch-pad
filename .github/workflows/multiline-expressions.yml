@@ -53,6 +53,8 @@ jobs:
   simple:
     runs-on: ubuntu-latest
     continue-on-error: true
+    env:
+      string_false: "${{ 'fal' }}${{ 'se' }}"
     steps:
       - name: '{{ false }}'
         # equiv: false
@@ -174,6 +176,14 @@ jobs:
       
       - name: "{{ format('{0}', false)"
         if: ${{ format('{0}', false) }}
+        run: echo "it runs"
+      
+      - name: "env.string_false"
+        if: env.string_false
+        run: echo "it runs"
+      
+      - name: "{{ env.string_false }}"
+        if: ${{ env.string_false }}
         run: echo "it runs"
       
   testingSomething:
