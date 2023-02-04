@@ -228,6 +228,14 @@ jobs:
         if: ${{ false }}${{ null }}
         run: echo "it runs"
       
+      - name: "{{ null }}{{ null }}"
+        if: ${{ null }}${{ null }}
+        run: echo "it runs"
+      
+      - name: "{{ 0 }}{{ null }}"
+        if: ${{ 0 }}${{ null }}
+        run: echo "it runs"
+      
 
   stringFalse:
     runs-on: ubuntu-latest
