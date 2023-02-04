@@ -160,7 +160,7 @@ jobs:
         run: echo "it runs"
       
       - name: ''
-        if: ${{ 'fal' }} ${{ 'se' }}
+        if: ${{ 'fal' }}${{ 'se' }}
         run: echo "it runs"
   testingSomething:
     runs-on: ubuntu-latest
