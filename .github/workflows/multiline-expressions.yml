@@ -148,20 +148,34 @@ jobs:
         run: echo "it runs"
       
       - name: "' false'"
+        # equiv: false
         if: ' false'
         run: echo "it runs"
       
       - name: "' {{ false }}'"
+        # equiv: format(' {0}, false)
         if: ' ${{ false }}'
         run: echo "it runs"
      
       - name: "' {{ false }} '"
+        # equiv: format(' {0} ', false)
         if: ' ${{ false }} '
         run: echo "it runs"
       
-      - name: ''
+      - name: "{{ 'fal' }}{{ 'se' }}"
+        # equiv: format('{0}{1}', 'fal', 'se')
+        # I actually thought this one would evaluate to false. /shrug
         if: ${{ 'fal' }}${{ 'se' }}
         run: echo "it runs"
+
+      - name: "format('{0}', false)"
+        if: format('{0}', false)
+        run: echo "it runs"
+      
+      - name: "{{ format('{0}', false)"
+        if: ${{ format('{0}', false) }}
+        run: echo "it runs"
+      
   testingSomething:
     runs-on: ubuntu-latest
     continue-on-error: true
