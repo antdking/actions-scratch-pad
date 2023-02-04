@@ -159,6 +159,17 @@ jobs:
         if: ' ${{ false }} '
         run: echo "it runs"
 
+  testingSomething:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Jeff
+        if: ' ${{ false }}'
+        run: echo "it runs"
+      - name: Jeff
+        id: jeff
+        if: ' ${{ false }}'
+        run: echo "it runs"
 
   main:
     runs-on: ubuntu-latest
