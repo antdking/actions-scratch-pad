@@ -158,7 +158,10 @@ jobs:
       - name: "' {{ false }} '"
         if: ' ${{ false }} '
         run: echo "it runs"
-
+      
+      - name: ''
+        if: ${{ 'fal' }} ${{ 'se' }}
+        run: echo "it runs"
   testingSomething:
     runs-on: ubuntu-latest
     continue-on-error: true
