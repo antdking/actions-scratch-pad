@@ -270,6 +270,46 @@ jobs:
         # falsy!
         if: ${{ '' }}${{ null }}${{ null }}${{ '' }}${{ '' }}
         run: echo "it runs"
+      
+      - name: 'github.repository == "antdking/actions-scratch-pad"'
+        if: github.repository == "antdking/actions-scratch-pad"
+        run: echo "it runs"
+      
+      - name: "github.repository == 'antdking/actions-scratch-pad'"
+        if: github.repository == 'antdking/actions-scratch-pad'
+        run: echo "it runs"
+
+      - name: '{{ github.repository }} == "antdking/actions-scratch-pad"'
+        if: ${{ github.repository }} == "antdking/actions-scratch-pad"
+        run: echo "it runs"
+      
+      - name: "{{ github.repository }} == 'antdking/actions-scratch-pad'"
+        if: ${{ github.repository }} == 'antdking/actions-scratch-pad'
+        run: echo "it runs"
+
+      - name: "{{ github.repository == 'antdking/actions-scratch-pad' }}"
+        if: ${{ github.repository == 'antdking/actions-scratch-pad' }}
+        run: echo "it runs"
+      
+      - name: 'github.repository != "antdking/actions-scratch-pad"'
+        if: github.repository != "antdking/actions-scratch-pad"
+        run: echo "it runs"
+      
+      - name: "github.repository != 'antdking/actions-scratch-pad'"
+        if: github.repository != 'antdking/actions-scratch-pad'
+        run: echo "it runs"
+
+      - name: '{{ github.repository }} != "antdking/actions-scratch-pad"'
+        if: ${{ github.repository }} != "antdking/actions-scratch-pad"
+        run: echo "it runs"
+      
+      - name: "{{ github.repository }} != 'antdking/actions-scratch-pad'"
+        if: ${{ github.repository }} != 'antdking/actions-scratch-pad'
+        run: echo "it runs"
+
+      - name: "{{ github.repository != 'antdking/actions-scratch-pad'"
+        if: ${{ github.repository != 'antdking/actions-scratch-pad' }}
+        run: echo "it runs"
 
   stringFalse:
     runs-on: ubuntu-latest
