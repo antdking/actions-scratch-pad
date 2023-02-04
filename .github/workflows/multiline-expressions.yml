@@ -261,7 +261,7 @@ jobs:
       - name: show Join is better than concatonating {{ '' }}{{ '' }}
         # equiv: string ''
         # falsy!
-        if: join(fromJSON('[null, null, "", "", null]'))
+        if: join(fromJSON('[null, null, "", "", null]'), '')
         run: echo "it runs"
 
   stringFalse:
