@@ -303,6 +303,10 @@ jobs:
         if: ${{ github.repository != 'antdking/actions-scratch-pad' }}
         run: echo "it runs"
 
+      - name: "( {{ false }} ) && true"
+        if: ( ${{ false }} ) && true
+        run: echo "it runs"
+
   stringFalse:
     runs-on: ubuntu-latest
     continue-on-error: true
