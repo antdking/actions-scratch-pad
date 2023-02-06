@@ -18,53 +18,82 @@ jobs:
     if: false
     steps:
       - run: echo "no-op"
-  with-skipped--gate:
-    continue-on-error: true
+  with-skipped--gate-truthy:
     runs-on: ubuntu-latest
     needs: [with-skipped]
     if: |-
-      !failure() && !cancelled()
+      always() && !cancelled()
     steps:
       - run: echo "no-op"
-
-  should-run-gate-truthy:
+  with-skipped--gate-falsy:
     runs-on: ubuntu-latest
-    needs: [with-skipped--gate]
+    needs: [with-skipped]
+    if: |-
+      always() && !cancelled()
     steps:
-      - run: echo "I run"
+      - run: exit 1
+
+  no-run-gate-truthy--transient-needs:
+    runs-on: ubuntu-latest
+    needs: [with-skipped--gate-truthy]
+    steps:
+      - run: echo "I will not run"
   
   always-fail:
     runs-on: ubuntu-latest
     steps:
       - run: exit 1
+  always-success:
+    runs-on: ubuntu-latest
+    steps:
+      - run: exit 0
 
   should-run-gate-truthy--explicit:
     runs-on: ubuntu-latest
-    needs: [with-skipped--gate]
+    needs: [with-skipped--gate-truthy]
     if: |-
       !failure() && !cancelled()
-      && !contains(needs.*.result, 'failure')
     steps:
       - run: echo "I run"
 
   no-run-gate-truthy--other-job-failed:
     runs-on: ubuntu-latest
-    needs: [with-skipped--gate, always-fail]
+    needs: [with-skipped--gate-truthy, always-fail]
     if: |-
       !failure() && !cancelled()
     steps:
       - run: echo "I will not run"
-  
+
+  no-run-gate-falsy:
+    runs-on: ubuntu-latest
+    needs: [with-skipped--gate-falsy]
+    if: |-
+      !failure() && !cancelled()
+    steps:
+      - run: echo "I run"
+
+  no-run-gate-falsy--other-jobs-pass:
+    runs-on: ubuntu-latest
+    needs: [with-skipped--gate-falsy, always-success]
+    if: |-
+      !failure() && !cancelled()
+    steps:
+      - run: echo "I run"
+
   capture-context:
     runs-on: ubuntu-latest
     needs:
       - with-skipped
-      - with-skipped--gate
-      - should-run-gate-truthy
+      - with-skipped--gate-truthy
+      - with-skipped--gate-falsy
+      - no-run-gate-truthy--transient-needs
       - always-fail
+      - always-success
       - should-run-gate-truthy--explicit
       - no-run-gate-truthy--other-job-failed
-    if: always() && !cancelled()
+      - no-run-gate-falsy
+      - no-run-gate-falsy--other-jobs-pass
+    if: always()
     env:
       _NEEDS_CONTEXT: "${{ toJSON(needs) }}"
     steps:
