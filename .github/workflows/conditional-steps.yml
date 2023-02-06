@@ -60,7 +60,7 @@ jobs:
       - implicit-depends-on-skipped--explicit-allow
     if: always() && !cancelled()
     env:
-      _NEEDS_CONTEXT: ${{ fromJSON(needs) }}
+      _NEEDS_CONTEXT: "${{ toJSON(needs) }}"
     steps:
       - run: echo "$_NEEDS_CONTEXT"
 
