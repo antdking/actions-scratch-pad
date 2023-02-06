@@ -49,6 +49,20 @@ jobs:
       && !contains(needs.*.result, 'failure')
     steps:
       - run: echo "I will run"
+  
+  capture-context:
+    runs-on: ubuntu-latest
+    needs:
+      - with-skipped
+      - depends-on-skipped
+      - depends-on-skipped--explicit-allow
+      - implicit-depends-on-skipped
+      - implicit-depends-on-skipped--explicit-allow
+    if: always() && !cancelled()
+    env:
+      _NEEDS_CONTEXT: ${{ fromJSON(needs) }}
+    steps:
+      - run: echo "$_NEEDS_CONTEXT"
 
   with-failure:
     runs-on: ubuntu-latest
