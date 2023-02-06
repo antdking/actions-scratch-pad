@@ -23,7 +23,7 @@ jobs:
     needs: [with-skipped]
     steps:
       - run: echo "I ran"
-  depends-on-skipped--explicit:
+  depends-on-skipped--explicit-allow:
     runs-on: ubuntu-latest
     needs: [with-skipped]
     if: |-
@@ -34,6 +34,21 @@ jobs:
       )
     steps:
       - run: echo "I ran"
+  implicit-depends-on-skipped:
+    runs-on: ubuntu-latest
+    needs: [depends-on-skipped--explicit-allow]
+    steps:
+      - run: echo "I will not run due to implicit needs"
+  
+  implicit-depends-on-skipped--explicit-allow:
+    runs-on: ubuntu-latest
+    needs: [depends-on-skipped--explicit-allow]
+    if: |-
+      always() && !cancelled()
+      && !contains(needs.*.result, 'skipped')
+      && !contains(needs.*.result, 'failure')
+    steps:
+      - run: echo "I will run"
 
   with-failure:
     runs-on: ubuntu-latest
