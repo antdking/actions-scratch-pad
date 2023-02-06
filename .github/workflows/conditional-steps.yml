@@ -18,46 +18,52 @@ jobs:
     if: false
     steps:
       - run: echo "no-op"
-  depends-on-skipped:
-    runs-on: ubuntu-latest
-    needs: [with-skipped]
-    steps:
-      - run: echo "I ran"
-  depends-on-skipped--explicit-allow:
+  with-skipped--gate:
+    continue-on-error: true
     runs-on: ubuntu-latest
     needs: [with-skipped]
     if: |-
-      always() && !cancelled()
-      && (
-        needs.with-skipped.result == 'success'
-        || needs.with-skipped.result == 'skipped'
-      )
+      !failure() && !cancelled()
     steps:
-      - run: echo "I ran"
-  implicit-depends-on-skipped:
+      - run: echo "no-op"
+
+  should-run-gate-truthy:
     runs-on: ubuntu-latest
-    needs: [depends-on-skipped--explicit-allow]
+    needs: [with-skipped--gate]
     steps:
-      - run: echo "I will not run due to implicit needs"
+      - run: echo "I run"
   
-  implicit-depends-on-skipped--explicit-allow:
+  always-fail:
     runs-on: ubuntu-latest
-    needs: [depends-on-skipped--explicit-allow]
+    steps:
+      - run: exit 1
+
+  should-run-gate-truthy--explicit:
+    runs-on: ubuntu-latest
+    needs: [with-skipped--gate]
     if: |-
-      always() && !cancelled()
-      && !contains(needs.*.result, 'skipped')
+      !failure() && !cancelled()
       && !contains(needs.*.result, 'failure')
     steps:
-      - run: echo "I will run"
+      - run: echo "I run"
+
+  no-run-gate-truthy--other-job-failed:
+    runs-on: ubuntu-latest
+    needs: [with-skipped--gate, always-fail]
+    if: |-
+      !failure() && !cancelled()
+    steps:
+      - run: echo "I will not run"
   
   capture-context:
     runs-on: ubuntu-latest
     needs:
       - with-skipped
-      - depends-on-skipped
-      - depends-on-skipped--explicit-allow
-      - implicit-depends-on-skipped
-      - implicit-depends-on-skipped--explicit-allow
+      - with-skipped--gate
+      - should-run-gate-truthy
+      - always-fail
+      - should-run-gate-truthy--explicit
+      - no-run-gate-truthy--other-job-failed
     if: always() && !cancelled()
     env:
       _NEEDS_CONTEXT: "${{ toJSON(needs) }}"
