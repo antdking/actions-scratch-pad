@@ -12,6 +12,29 @@ defaults:
     shell: bash
 
 jobs:
+  with-skipped:
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    if: false
+    steps:
+      - run: echo "no-op"
+  depends-on-skipped:
+    runs-on: ubuntu-latest
+    needs: [with-skipped]
+    steps:
+      - run: echo "I ran"
+  depends-on-skipped--explicit:
+    runs-on: ubuntu-latest
+    needs: [with-skipped]
+    if: |-
+      always() && !cancelled()
+      && (
+        needs.with-skipped.result == 'success'
+        || needs.with-skipped.result == 'skipped'
+      )
+    steps:
+      - run: echo "I ran"
+
   with-failure:
     runs-on: ubuntu-latest
     steps:
@@ -31,12 +54,12 @@ jobs:
         run: |
           echo "This will show when there is a prior failure"
           echo "status: ${{ job.status }}"
-        
+
       - if: always()
         run: |
           echo "this will always show, no matter what"
           echo "status: ${{ job.status }}"
-      
+
       - if: ${{ !cancelled() }}
         run: |
           echo "this should show, as docs suggest"
