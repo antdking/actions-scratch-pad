@@ -1,0 +1,30 @@
+name: conditional jobs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/dynamic-outputs.yml
+  workflow_dispatch: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  meta:
+    runs-on: ubuntu-latest
+    outputs:
+      foo: bar
+      zed: alfred
+    steps:
+      - run: echo "it ran"
+  main:
+    runs-on: ubuntu-latest
+    needs: [meta]
+    outputs: ${{ fromJSON(needs.meta.outputs) }}
+    steps:
+      - run: echo "it ran"
+      - env:
+          _NEEDS_CONTEXT: ${{ toJSON(needs.meta) }}
+        run: echo "${_NEEDS_CONTEXT}"
